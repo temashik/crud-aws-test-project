@@ -27,7 +27,7 @@ functions:
     iamRoleStatements:
       - Effect: "Allow"
         Action:
-          - "dynamodb:PutItem"
+          - "dynamodb:GetItem"
         Resource: !GetAtt VisitorsTable.Arn
   getAllVisitors:
     handler: src/api.getAllVisitors
@@ -55,7 +55,7 @@ functions:
     iamRoleStatements:
       - Effect: "Allow"
         Action:
-          - "dynamodb:GetItem"
+          - "dynamodb:PutItem"
         Resource: !GetAtt VisitorsTable.Arn
   updateVisitor:
     handler: src/api.updateVisitor
