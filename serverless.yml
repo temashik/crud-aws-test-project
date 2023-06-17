@@ -8,96 +8,96 @@ provider:
   environment:
     DYNAMODB_TABLE_NAME: ${self:custom.visitorsTableName}
 
-  custom:
-    visitorsTableName: visitors-dev
+custom:
+  visitorsTableName: visitors-${self:provider.stage}
 
-  plugins:
-    - serverless-iam-roles-per-function
+plugins:
+  - serverless-iam-roles-per-function
 
-  functions:
-    getOneVisitor:
-      handler: src/api.getOneVisitor
-      name: get-one-visitor
-      memorySize: 128 # mb
-      timeout: 5 # seconds
-      events:
-        - http:
-            path: visitor/{visitorId}
-            method: GET
-      iamRoleStatements:
-        - Effect: "Allow"
-          Action:
-            - "dynamodb:PutItem"
-          Resource: !GetAtt VisitorsTable.Arn
-    getAllVisitors:
-      handler: src/api.getAllVisitors
-      name: get-all-visitors
-      memorySize: 128 # mb
-      timeout: 5 # seconds
-      events:
-        - http:
-            path: visitors
-            method: GET
-      iamRoleStatements:
-        - Effect: "Allow"
-          Action:
-            - "dynamodb:Scan"
-          Resource: !GetAtt VisitorsTable.Arn
-    addVisitor:
-      handler: src/api.addVisitor
-      name: add-visitor
-      memorySize: 128 # mb
-      timeout: 5 # seconds
-      events:
-        - http:
-            path: visitor
-            method: POST
-      iamRoleStatements:
-        - Effect: "Allow"
-          Action:
-            - "dynamodb:GetItem"
-          Resource: !GetAtt VisitorsTable.Arn
-    updateVisitor:
-      handler: src/api.updateVisitor
-      name: update-visitor
-      memorySize: 128 # mb
-      timeout: 5 # seconds
-      events:
-        - http:
-            path: visitor/{visitorId}
-            method: PUT
-      iamRoleStatements:
-        - Effect: "Allow"
-          Action:
-            - "dynamodb:UpdateItem"
-          Resource: !GetAtt VisitorsTable.Arn
-    removeVisitor:
-      handler: src/api.removeVisitor
-      name: remove-visitor
-      memorySize: 128 # mb
-      timeout: 5 # seconds
-      events:
-        - http:
-            path: visitor/{visitorId}
-            method: DELETE
-      iamRoleStatements:
-        - Effect: "Allow"
-          Action:
-            - "dynamodb:DeleteItem"
-          Resource: !GetAtt VisitorsTable.Arn
+functions:
+  getOneVisitor:
+    handler: src/api.getOneVisitor
+    name: get-one-visitor
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    events:
+      - http:
+          path: visitor/{visitorId}
+          method: GET
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:PutItem"
+        Resource: !GetAtt VisitorsTable.Arn
+  getAllVisitors:
+    handler: src/api.getAllVisitors
+    name: get-all-visitors
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    events:
+      - http:
+          path: visitors
+          method: GET
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:Scan"
+        Resource: !GetAtt VisitorsTable.Arn
+  addVisitor:
+    handler: src/api.addVisitor
+    name: add-visitor
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    events:
+      - http:
+          path: visitor
+          method: POST
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:GetItem"
+        Resource: !GetAtt VisitorsTable.Arn
+  updateVisitor:
+    handler: src/api.updateVisitor
+    name: update-visitor
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    events:
+      - http:
+          path: visitor/{visitorId}
+          method: PUT
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:UpdateItem"
+        Resource: !GetAtt VisitorsTable.Arn
+  removeVisitor:
+    handler: src/api.removeVisitor
+    name: remove-visitor
+    memorySize: 128 # mb
+    timeout: 5 # seconds
+    events:
+      - http:
+          path: visitor/{visitorId}
+          method: DELETE
+    iamRoleStatements:
+      - Effect: "Allow"
+        Action:
+          - "dynamodb:DeleteItem"
+        Resource: !GetAtt VisitorsTable.Arn
 
-  resources:
-    Resources:
-      VisitorsTable:
-        Type: AWS::DynamoDB::Table
-        Properties:
-          TableName: ${self:custom.visitorsTableName}
-          AttributeDefinitions:
-            - AttributeName: visitorId
-              AttributeType: N
-          KeySchema:
-            - AttributeName: visitorId
-              KeyType: HASH
-          ProvisionedThroughput:
-            ReadCapacityUnits: 1
-            WriteCapacityUnits: 1
+resources:
+  Resources:
+    VisitorsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.visitorsTableName}
+        AttributeDefinitions:
+          - AttributeName: visitorId
+            AttributeType: N
+        KeySchema:
+          - AttributeName: visitorId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
