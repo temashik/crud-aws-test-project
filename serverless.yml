@@ -9,7 +9,7 @@ provider:
     DYNAMODB_TABLE_NAME: ${self:custom.visitorsTableName}
 
 custom:
-  visitorsTableName: visitors-${self:provider.stage}
+  visitorsTableName: visitors-table-${self:provider.stage}
 
 plugins:
   - serverless-iam-roles-per-function
