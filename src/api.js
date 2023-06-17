@@ -60,6 +60,7 @@ const addVisitor = async (event) => {
 	try {
 		const visitor = JSON.parse(event.body);
 		visitor.id = uuid();
+		visitor.visitDate = new Date().toISOString();
 		const params = {
 			TableName: process.env.DYNAMODB_TABLE_NAME,
 			Item: marshall(visitor),
