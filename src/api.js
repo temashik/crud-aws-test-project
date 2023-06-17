@@ -15,7 +15,7 @@ const getOneVisitor = async (event) => {
 	try {
 		const params = {
 			TableName: process.env.DYNAMODB_TABLE_NAME,
-			Key: marshall({ id: Number(event.pathParameters.id) }),
+			Key: marshall({ id: event.pathParameters.id }),
 		}
 		const { Item } = await db.send(new GetItemCommand(params));
 		console.log({ Item });
@@ -89,7 +89,7 @@ const updateVisitor = async (event) => {
 		const objKeys = Object.keys(body)
 		const params = {
 			TableName: process.env.DYNAMODB_TABLE_NAME,
-			Key: marshall({ id: Number(event.pathParameters.id) }),
+			Key: marshall({ id: event.pathParameters.id }),
 			// Specific to DynamoDB update expression
 			UpdateExpression: `SET ${objKeys.map((_, index) => `#key${index} = :value${index}`).join(", ")}`,
             ExpressionAttributeNames: objKeys.reduce((acc, key, index) => ({
@@ -123,7 +123,7 @@ const removeVisitor = async (event) => {
 	try {
 		const params = {
 			TableName: process.env.DYNAMODB_TABLE_NAME,
-			Key: marshall({ id: Number(event.pathParameters.id) }),
+			Key: marshall({ id: event.pathParameters.id }),
 		}
 		const deleteResult = await db.send(new DeleteItemCommand(params));
 		response.body = JSON.stringify({
