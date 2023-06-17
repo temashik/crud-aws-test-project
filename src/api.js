@@ -87,7 +87,7 @@ const updateVisitor = async (event) => {
 		const objKeys = Object.keys(body)
 		const params = {
 			TableName: process.env.DYNAMODB_TABLE_NAME,
-			Key: marshall({ visitorId: event.pathParameters.visitorId }),
+			Key: marshall({ visitorId: Number(event.pathParameters.visitorId) }),
 			// Specific to DynamoDB update expression
 			UpdateExpression: `SET ${objKeys.map((_, index) => `#key${index} = :value${index}`).join(", ")}`,
             ExpressionAttributeNames: objKeys.reduce((acc, key, index) => ({
@@ -121,7 +121,7 @@ const removeVisitor = async (event) => {
 	try {
 		const params = {
 			TableName: process.env.DYNAMODB_TABLE_NAME,
-			Item: marshall({ visitorId: event.pathParameters.visitorId }),
+			Item: marshall({ visitorId: Number(event.pathParameters.visitorId) }),
 		}
 		const deleteResult = await db.send(new DeleteItemCommand(params));
 		response.body = JSON.stringify({
