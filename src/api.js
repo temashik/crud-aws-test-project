@@ -14,7 +14,7 @@ const getOneVisitor = async (event) => {
 	try {
 		const params = {
 			TableName: process.env.DYNAMODB_TABLE_NAME,
-			Key: marshall({ visitorId: 1 }),
+			Key: marshall({ visitorId: Number(event.pathParameters.visitorId) }),
 		}
 		const { Item } = await db.send(new GetItemCommand(params));
 		console.log({ Item });
