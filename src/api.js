@@ -121,7 +121,7 @@ const removeVisitor = async (event) => {
 	try {
 		const params = {
 			TableName: process.env.DYNAMODB_TABLE_NAME,
-			Item: marshall({ visitorId: Number(event.pathParameters.visitorId) }),
+			Key: marshall({ visitorId: Number(event.pathParameters.visitorId) }),
 		}
 		const deleteResult = await db.send(new DeleteItemCommand(params));
 		response.body = JSON.stringify({
