@@ -20,8 +20,7 @@ const getOneVisitor = async (event) => {
 		console.log({ Item });
 		response.body = JSON.stringify({
 			message: "Successfully retrieved visitor",
-			data: unmarshall(Item),
-			rawData: Item,
+			data: (Item) ? unmarshall(Item) : {},
 		});
 	} catch (e) {
 		console.error(e);

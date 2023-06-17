@@ -5,11 +5,10 @@ provider:
   runtime: nodejs16.x
   stage: dev
   region: eu-north-1
-  environment:
-    DYNAMODB_TABLE_NAME: ${self:custom.visitorsTableName}
-
   custom:
     visitorsTableName: visitors-${self:provider.stage}
+  environment:
+    DYNAMODB_TABLE_NAME: ${self:custom.visitorsTableName}
 
   plugins:
     - serverless-iam-roles-per-function
