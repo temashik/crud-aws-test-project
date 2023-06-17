@@ -1,4 +1,5 @@
 const db = require("./db");
+const { v4: uuid } = require('uuid');
 const {
 	GetItemCommand,
 	ScanCommand,
@@ -14,7 +15,7 @@ const getOneVisitor = async (event) => {
 	try {
 		const params = {
 			TableName: process.env.DYNAMODB_TABLE_NAME,
-			Key: marshall({ visitorId: Number(event.pathParameters.visitorId) }),
+			Key: marshall({ id: Number(event.pathParameters.id) }),
 		}
 		const { Item } = await db.send(new GetItemCommand(params));
 		console.log({ Item });
@@ -41,7 +42,6 @@ const getAllVisitors = async (event) => {
 		response.body = JSON.stringify({
 			message: "Successfully retrieved all visitors",
 			data: Items.map((item) => unmarshall(item)),
-			Items,
 		});
 	} catch (e) {
 		console.error(e);
@@ -58,10 +58,11 @@ const addVisitor = async (event) => {
 	const response = { statusCode: 200 };
 
 	try {
-		const body = JSON.parse(event.body);
+		const visitor = JSON.parse(event.body);
+		visitor.id = uuid();
 		const params = {
 			TableName: process.env.DYNAMODB_TABLE_NAME,
-			Item: marshall(body),
+			Item: marshall(visitor),
 		}
 		const addResult = await db.send(new PutItemCommand(params));
 		response.body = JSON.stringify({
@@ -87,7 +88,7 @@ const updateVisitor = async (event) => {
 		const objKeys = Object.keys(body)
 		const params = {
 			TableName: process.env.DYNAMODB_TABLE_NAME,
-			Key: marshall({ visitorId: Number(event.pathParameters.visitorId) }),
+			Key: marshall({ id: Number(event.pathParameters.id) }),
 			// Specific to DynamoDB update expression
 			UpdateExpression: `SET ${objKeys.map((_, index) => `#key${index} = :value${index}`).join(", ")}`,
             ExpressionAttributeNames: objKeys.reduce((acc, key, index) => ({
@@ -121,7 +122,7 @@ const removeVisitor = async (event) => {
 	try {
 		const params = {
 			TableName: process.env.DYNAMODB_TABLE_NAME,
-			Key: marshall({ visitorId: Number(event.pathParameters.visitorId) }),
+			Key: marshall({ id: Number(event.pathParameters.id) }),
 		}
 		const deleteResult = await db.send(new DeleteItemCommand(params));
 		response.body = JSON.stringify({

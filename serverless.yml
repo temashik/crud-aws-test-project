@@ -22,7 +22,7 @@ functions:
     timeout: 5 # seconds
     events:
       - http:
-          path: visitor/{visitorId}
+          path: visitor/{id}
           method: GET
     iamRoleStatements:
       - Effect: "Allow"
@@ -64,7 +64,7 @@ functions:
     timeout: 5 # seconds
     events:
       - http:
-          path: visitor/{visitorId}
+          path: visitor/{id}
           method: PUT
     iamRoleStatements:
       - Effect: "Allow"
@@ -78,7 +78,7 @@ functions:
     timeout: 5 # seconds
     events:
       - http:
-          path: visitor/{visitorId}
+          path: visitor/{id}
           method: DELETE
     iamRoleStatements:
       - Effect: "Allow"
@@ -93,10 +93,10 @@ resources:
       Properties:
         TableName: ${self:custom.visitorsTableName}
         AttributeDefinitions:
-          - AttributeName: visitorId
-            AttributeType: N
+          - AttributeName: id
+            AttributeType: S
         KeySchema:
-          - AttributeName: visitorId
+          - AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
           ReadCapacityUnits: 1
