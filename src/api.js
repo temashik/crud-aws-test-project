@@ -10,7 +10,7 @@ const {
 const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 
 const getOneVisitor = async (event) => {
-	const response = { statusCode: 200 };
+	const response = { statusCode: 200 }; 
 
 	try {
 		const params = {
