@@ -11,6 +11,10 @@ const { marshall, unmarshall } = require("@aws-sdk/util-dynamodb");
 
 const getOneVisitor = async (event) => {
 	const response = { statusCode: 200 }; 
+	response.headers = {
+			'Access-Control-Allow-Origin': '*',
+      		'Access-Control-Allow-Credentials': true,
+		};
 
 	try {
 		const params = {
@@ -36,6 +40,10 @@ const getOneVisitor = async (event) => {
 };
 const getAllVisitors = async (event) => {
 	const response = { statusCode: 200 };
+	response.headers = {
+			'Access-Control-Allow-Origin': '*',
+      		'Access-Control-Allow-Credentials': true,
+		};
 
 	try {
 		const { Items } = await db.send(new ScanCommand({ TableName: process.env.DYNAMODB_TABLE_NAME }));
@@ -56,6 +64,10 @@ const getAllVisitors = async (event) => {
 };
 const addVisitor = async (event) => {
 	const response = { statusCode: 200 };
+	response.headers = {
+			'Access-Control-Allow-Origin': '*',
+      		'Access-Control-Allow-Credentials': true,
+		};
 
 	try {
 		const visitor = JSON.parse(event.body);
@@ -83,6 +95,10 @@ const addVisitor = async (event) => {
 };
 const updateVisitor = async (event) => {
 	const response = { statusCode: 200 };
+	response.headers = {
+			'Access-Control-Allow-Origin': '*',
+      		'Access-Control-Allow-Credentials': true,
+		};
 
 	try {
 		const body = JSON.parse(event.body);
@@ -119,6 +135,10 @@ const updateVisitor = async (event) => {
 };
 const removeVisitor = async (event) => {
 	const response = { statusCode: 200 };
+	response.headers = {
+			'Access-Control-Allow-Origin': '*',
+      		'Access-Control-Allow-Credentials': true,
+		};
 
 	try {
 		const params = {
